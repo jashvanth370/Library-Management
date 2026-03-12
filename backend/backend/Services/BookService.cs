@@ -22,6 +22,11 @@ namespace backend.Services
 
         public async Task CreateAsync(BookDto dto, int userId)
         {
+            if (await _bookRepository.IsbnExistsAsync(dto.Isbn))
+            {
+                throw new InvalidOperationException("A book with this ISBN already exists.");
+            }
+
             var book = new Book
             {
                 Title = dto.Title,
@@ -39,6 +44,11 @@ namespace backend.Services
         {
             var book = await _bookRepository.GetByIdAsync(id, userId)
                        ?? throw new KeyNotFoundException("Book not found or access denied");
+
+            if (await _bookRepository.IsbnExistsAsync(dto.Isbn, id))
+            {
+                throw new InvalidOperationException("A book with this ISBN already exists.");
+            }
 
             book.Title = dto.Title;
             book.Author = dto.Author;

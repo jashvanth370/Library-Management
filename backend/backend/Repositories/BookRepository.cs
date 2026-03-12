@@ -1,4 +1,4 @@
-﻿using backend.Data;
+using backend.Data;
 using backend.Modals;
 using backend.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -51,6 +51,20 @@ namespace backend.Repositories
         {
             _context.Books.Update(book);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsbnExistsAsync(string isbn, int? excludeId = null)
+        {
+            if (string.IsNullOrWhiteSpace(isbn))
+                return false;
+
+            var query = _context.Books.Where(b => b.Isbn == isbn);
+            if (excludeId.HasValue)
+            {
+                query = query.Where(b => b.Id != excludeId.Value);
+            }
+
+            return await query.AnyAsync();
         }
     }
 }

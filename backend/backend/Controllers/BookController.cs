@@ -1,4 +1,4 @@
-﻿using backend.DTOs;
+using backend.DTOs;
 using backend.Modals;
 using backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -50,14 +50,25 @@ public class BooksController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(BookDto dto)
     {
-        var userId = GetUserId();
-
-        await _bookService.CreateAsync(dto, userId);
-
-        return Ok(new
+        try
         {
-            message = "Book created successfully"
-        });
+            var userId = GetUserId();
+
+            await _bookService.CreateAsync(dto, userId);
+
+            return Ok(new
+            {
+                message = "Book created successfully"
+            });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "An error occurred while creating the book.", error = ex.Message });
+        }
     }
 
     [HttpPut("{id}")]
@@ -72,6 +83,10 @@ public class BooksController : ControllerBase
         catch (KeyNotFoundException ex)
         {
             return NotFound(new { message = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { error = ex.Message });
         }
         catch (Exception ex)
         {

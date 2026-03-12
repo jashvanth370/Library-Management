@@ -1,4 +1,4 @@
-﻿using backend.Modals;
+using backend.Modals;
 
 namespace backend.Repositories.Interfaces
 {
@@ -11,5 +11,6 @@ namespace backend.Repositories.Interfaces
         Task AddAsync(Book book);
         Task UpdateAsync(Book book);
         Task DeleteAsync(Book book);
+        Task<bool> IsbnExistsAsync(string isbn, int? excludeId = null);
     }
 }
