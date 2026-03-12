@@ -1,0 +1,53 @@
+    <div class="auth-container">
+      <div class="auth-card">
+        <div class="brand">
+          <svg viewBox="0 0 24 24" fill="none" class="brand-logo" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h2>Create Account</h2>
+          <p>Join our premium library service</p>
+        </div>
+
+        <form (ngSubmit)="onSubmit()" #registerForm="ngForm" class="auth-form">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input 
+              type="text" 
+              id="username" 
+              name="username" 
+              [(ngModel)]="username" 
+              required 
+              placeholder="Enter your username"
+              autocomplete="username"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              [(ngModel)]="password" 
+              required 
+              placeholder="Create a strong password"
+              autocomplete="new-password"
+            />
+          </div>
+
+          <button type="submit" [disabled]="!registerForm.form.valid || isLoading()" class="btn-primary">
+            {{ isLoading() ? 'Creating Account...' : 'Sign Up' }}
+          </button>
+        </form>
+
+        <div *ngIf="errorMessage()" class="alert alert-error">
+          {{ errorMessage() }}
+        </div>
+
+        <div class="auth-footer">
+          <p>Already have an account? <a routerLink="/login">Log in instead</a></p>
+        </div>
+      </div>
+    </div>
