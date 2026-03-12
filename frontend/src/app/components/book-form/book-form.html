@@ -1,0 +1,86 @@
+    <div class="form-container">
+      <div class="form-card" (click)="$event.stopPropagation()">
+        <div class="form-header">
+          <h2>{{ isEditing() ? 'Edit Book' : 'Add New Book' }}</h2>
+          <button class="btn-close" routerLink="/books" title="Cancel">&times;</button>
+        </div>
+
+        <form [formGroup]="bookForm" (ngSubmit)="onSubmit()" class="custom-form">
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label for="title">Book Title</label>
+              <input 
+                type="text" 
+                id="title" 
+                formControlName="title" 
+                placeholder="E.g., The Great Gatsby"
+                [class.is-invalid]="bookForm.get('title')?.invalid && bookForm.get('title')?.touched"
+              />
+              <div class="error-msg" *ngIf="bookForm.get('title')?.invalid && bookForm.get('title')?.touched">
+                Title is required (max 150 chars).
+              </div>
+            </div>
+
+            <div class="form-group flex-2">
+              <label for="author">Author</label>
+              <input 
+                type="text" 
+                id="author" 
+                formControlName="author" 
+                placeholder="E.g., F. Scott Fitzgerald"
+                [class.is-invalid]="bookForm.get('author')?.invalid && bookForm.get('author')?.touched"
+              />
+               <div class="error-msg" *ngIf="bookForm.get('author')?.invalid && bookForm.get('author')?.touched">
+                Author is required (max 100 chars).
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label for="isbn">ISBN</label>
+              <input 
+                type="text" 
+                id="isbn" 
+                formControlName="isbn" 
+                placeholder="E.g., 978-3-16-148410-0"
+              />
+            </div>
+
+            <div class="form-group flex-1">
+              <label for="publicationDate">Publication Date</label>
+              <input 
+                type="date" 
+                id="publicationDate" 
+                formControlName="publicationDate" 
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea 
+              id="description" 
+              formControlName="description" 
+              rows="4" 
+              placeholder="A brief summary of the book..."
+              [class.is-invalid]="bookForm.get('description')?.invalid && bookForm.get('description')?.touched"
+            ></textarea>
+             <div class="error-msg" *ngIf="bookForm.get('description')?.invalid && bookForm.get('description')?.touched">
+                Description cannot exceed 1000 characters.
+              </div>
+          </div>
+
+          <div *ngIf="errorMessage()" class="alert alert-error">
+            {{ errorMessage() }}
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" routerLink="/books">Cancel</button>
+            <button type="submit" class="btn-primary" [disabled]="bookForm.invalid || isLoading()">
+              {{ isLoading() ? 'Saving...' : (isEditing() ? 'Update Book' : 'Save Book') }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
