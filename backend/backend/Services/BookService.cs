@@ -1,4 +1,4 @@
-﻿using backend.DTOs;
+using backend.DTOs;
 using backend.Modals;
 using backend.Repositories.Interfaces;
 using backend.Services.Interfaces;
@@ -26,6 +26,8 @@ namespace backend.Services
             {
                 Title = dto.Title,
                 Author = dto.Author,
+                Isbn = dto.Isbn,
+                PublicationDate = dto.PublicationDate,
                 Description = dto.Description,
                 UserId = userId
             };
@@ -40,6 +42,8 @@ namespace backend.Services
 
             book.Title = dto.Title;
             book.Author = dto.Author;
+            book.Isbn = dto.Isbn;
+            book.PublicationDate = dto.PublicationDate;
             book.Description = dto.Description;
             book.UpdatedAt = DateTime.UtcNow;
 

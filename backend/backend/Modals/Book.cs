@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace backend.Modals
 {
@@ -13,6 +13,11 @@ namespace backend.Modals
         [Required]
         [MaxLength(100)]
         public string Author { get; set; } = string.Empty;
+
+        [MaxLength(50)]
+        public string Isbn { get; set; } = string.Empty;
+
+        public DateTime? PublicationDate { get; set; }
 
         [MaxLength(1000)]
         public string? Description { get; set; }
