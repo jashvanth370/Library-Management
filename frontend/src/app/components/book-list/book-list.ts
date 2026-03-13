@@ -17,6 +17,8 @@ export class BookList implements OnInit {
   isLoading = signal(true);
   errorMessage = signal<string | null>(null);
   showLogoutModal = signal<boolean>(false);
+  showDeleteModal = signal<boolean>(false);
+  bookToDelete = signal<number | null>(null);
 
   constructor(
     private bookService: BookService,
@@ -41,14 +43,29 @@ export class BookList implements OnInit {
     });
   }
 
-  deleteBook(id: number): void {
-    if (confirm('Are you sure you want to delete this book?')) {
+  confirmDelete(id: number): void {
+    this.bookToDelete.set(id);
+    this.showDeleteModal.set(true);
+  }
+
+  cancelDelete(): void {
+    this.showDeleteModal.set(false);
+    this.bookToDelete.set(null);
+  }
+
+  deleteBook(): void {
+    const id = this.bookToDelete();
+    if (id !== null) {
       this.bookService.deleteBook(id).subscribe({
         next: () => {
           this.books.update(books => books.filter(b => b.id !== id));
+          this.showDeleteModal.set(false);
+          this.bookToDelete.set(null);
         },
         error: (err) => {
           alert('Failed to delete the book.');
+          this.showDeleteModal.set(false);
+          this.bookToDelete.set(null);
         }
       });
     }
